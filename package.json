@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/unamednada/author-book-msc/issues"
   },
-  "homepage": "https://github.com/unamednada/author-book-msc#readme"
+  "homepage": "https://github.com/unamednada/author-book-msc#readme",
+  "dependencies": {
+    "dotenv": "^14.2.0"
+  }
 }
