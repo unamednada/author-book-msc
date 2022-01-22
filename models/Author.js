@@ -5,9 +5,9 @@ const QUERIES = {
 }
 
 const getAll = async () => {
-  const result = await connection.execute(QUERIES.getAll);
+  const [authors] = await connection.execute(QUERIES.getAll);
 
-  return result;
+  return authors;
 };
 
 module.exports = {
