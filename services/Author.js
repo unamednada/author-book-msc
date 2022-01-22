@@ -14,3 +14,32 @@ const isValid = (firstName, middleName, lastName) => {
   if (middleName && typeof middleName !== 'string') return false;
   return true;
 };
+
+const getAll = async () => {
+  const authors = await Author.getAll();
+
+  return authors.map(format);
+};
+
+const findById = async (id) => {
+  const author = await Author.findById(id);
+
+  if (author) return format(author);
+  return null;
+};
+
+const create = async (firstName, middleName, lastName) => {
+  const authorValid = isValid(firstName, middleName, lastName);
+
+  if (!authorValid) return false;
+
+  await Author.create(firstName, middleName, lastName);
+
+  return true;
+};
+
+module.exports = {
+  getAll,
+  findById,
+  create,
+};

@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 
 const { PORT } = process.env;
 
-const Author = require('./models/Author');
+const Author = require('./services/Author');
 const Book = require('./models/Book');
 
 app.get('/authors/:id', async (req, res) => {
@@ -28,10 +28,11 @@ app.get('/authors', async (_req, res) => {
 
 app.post('/authors', async (req, res) => {
   const { first_name, middle_name, last_name } = req.body;
+  
+  const author = await Author.create(first_name, middle_name, last_name);
 
-  if (!Author.isValid(first_name, middle_name, last_name)) return res.status(400).json({ message: 'Datanotvalid' });
+  if (!author) return res.status(400).json({ message: 'Datanotvalid' });
 
-  await Author.create(first_name, middle_name, last_name);
   res.status(201).json({ message: 'Author created' });
 });
 
