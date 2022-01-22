@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/unamednada/author-book-msc#readme",
   "dependencies": {
+    "body-parser": "^1.19.1",
     "dotenv": "^14.2.0",
     "express": "^4.17.2",
     "express-route": "^0.1.4",
