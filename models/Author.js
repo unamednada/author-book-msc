@@ -3,6 +3,7 @@ const connection = require('./connection');
 const QUERIES = {
   getAll: 'SELECT id, first_name, middle_name, last_name FROM authors',
   findById: 'SELECT id, first_name, middle_name, last_name FROM authors WHERE id = ?',
+  create: 'INSERT INTO model_example.authors (first_name, middle_name, last_name) VALUES (?, ?, ?)',
 }
 
 const format = ({ id, firstName, middleName, lastName }) => ({
@@ -19,6 +20,12 @@ const serialize = (authorData) => ({
   middleName: authorData.middle_name,
   lastName: authorData.last_name,
 });
+
+const isValid = (firstName, middleName, lastName) => {
+  if (!firstName || typeof firstName !== 'string') return false;
+  if (!lastName || typeof lastName !== 'string') return false;
+  return true;
+};
 
 const getAll = async () => {
   const [authors] = await connection.execute(QUERIES.getAll);
@@ -40,7 +47,14 @@ const findById = async (authorId) => {
   });
 };
 
+const create = async (firstName, middleName, lastName) => {
+  await connection.execute(QUERIES.create, [firstName, middleName || null, lastName]);
+
+};
+
 module.exports = {
   getAll,
   findById,
+  isValid,
+  create,
 };

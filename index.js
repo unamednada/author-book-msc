@@ -2,6 +2,9 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
 const { PORT } = process.env;
 
 const Author = require('./models/Author');
@@ -21,6 +24,15 @@ app.get('/authors', async (_req, res) => {
   const authors = await Author.getAll();
 
   res.status(200).json(authors);
+});
+
+app.post('/authors', async (req, res) => {
+  const { first_name, middle_name, last_name } = req.body;
+
+  if (!Author.isValid(first_name, middle_name, last_name)) return res.status(400).json({ message: 'Datanotvalid' });
+
+  await Author.create(first_name, middle_name, last_name);
+  res.status(201).json({ message: 'Author created' });
 });
 
 app.get('/books/author/:author_id', async (req, res) => {
