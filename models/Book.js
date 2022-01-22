@@ -20,6 +20,8 @@ const getAll = async () => {
 const getByAuthorId = async (authorId) => {
   const [books] = await connection.execute(QUERIES.getByAuthorId, [authorId]);
 
+  if (!books.length) return null;
+
   return books.map(serialize);
 };
 
