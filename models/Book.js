@@ -11,7 +11,7 @@ const serialize = (bookData) => ({
 });
 
 const getAll = async () => {
-  const [books] = connection.execute(QUERIES.getAll);
+  const [books] = await connection.execute(QUERIES.getAll);
 
   return books.map(serialize);
 };
