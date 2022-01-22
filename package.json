@@ -23,7 +23,8 @@
     "dotenv": "^14.2.0",
     "express": "^4.17.2",
     "express-route": "^0.1.4",
-    "joi": "^17.5.0"
+    "joi": "^17.5.0",
+    "mysql2": "^2.3.3"
   },
   "description": "",
   "devDependencies": {
