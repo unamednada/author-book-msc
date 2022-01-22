@@ -6,14 +6,6 @@ const QUERIES = {
   create: 'INSERT INTO model_example.authors (first_name, middle_name, last_name) VALUES (?, ?, ?)',
 }
 
-const format = ({ id, firstName, middleName, lastName }) => ({
-  id,
-  firstName,
-  middleName,
-  lastName,
-  fullName: [firstName, middleName, lastName].filter(exist => exist).join(' '),
-});
-
 const serialize = (authorData) => ({
   id: authorData.id,
   firstName: authorData.first_name,
@@ -21,17 +13,10 @@ const serialize = (authorData) => ({
   lastName: authorData.last_name,
 });
 
-const isValid = (firstName, middleName, lastName) => {
-  if (!firstName || typeof firstName !== 'string') return false;
-  if (!lastName || typeof lastName !== 'string') return false;
-  if (middleName && typeof middleName !== 'string') return false;
-  return true;
-};
-
 const getAll = async () => {
   const [authors] = await connection.execute(QUERIES.getAll);
 
-  return authors.map(serialize).map(format);
+  return authors.map(serialize);
 };
 
 const findById = async (authorId) => {
@@ -40,7 +25,7 @@ const findById = async (authorId) => {
   if (!authorData.length) return null;
 
   const { firstName, middleName, lastName } = authorData.map(serialize)[0];
-  return format({
+  return ({
     id: authorId,
     firstName,
     middleName,
@@ -55,6 +40,5 @@ const create = async (firstName, middleName, lastName) => {
 module.exports = {
   getAll,
   findById,
-  isValid,
   create,
 };
