@@ -2,7 +2,8 @@ const connection = require('./connection');
 
 const QUERIES = {
   getAll: 'SELECT id, title, author_id FROM books',
-  getByAuthorId: 'SELECT id, title FROM books WHERE author_id = ?'
+  getByAuthorId: 'SELECT id, title, author_id FROM books WHERE author_id = ?',
+  findById: 'SELECT id, title, author_id FROM books WHERE id = ?'
 };
 
 const serialize = (bookData) => ({
@@ -25,7 +26,16 @@ const getByAuthorId = async (authorId) => {
   return books.map(serialize);
 };
 
+const findById = async (bookId) => {
+  const [bookData] = await connection.execute(QUERIES.findById, [bookId]);
+
+  if (!bookData.length) return null;
+
+  return bookData.map(serialize)[0];
+};
+
 module.exports = {
   getAll,
   getByAuthorId,
+  findById,
 };

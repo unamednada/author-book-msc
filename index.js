@@ -23,7 +23,7 @@ app.get('/authors', async (_req, res) => {
   res.status(200).json(authors);
 });
 
-app.get('/books/:author_id', async (req, res) => {
+app.get('/books/author/:author_id', async (req, res) => {
   const { author_id } = req.params;
 
   const books = await Book.getByAuthorId(author_id);
@@ -31,6 +31,16 @@ app.get('/books/:author_id', async (req, res) => {
   if (!books) return res.status(404).json({ message: 'Books Notfound' });
 
   res.status(200).json(books);
+});
+
+app.get('/books/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const book = await Book.findById(id);
+
+  if (!book) return res.status(404).json({ message: 'Book Notfound' });
+
+  res.status(200).json(book);
 });
 
 app.get('/books', async (_req, res) => {
