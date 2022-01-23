@@ -9,11 +9,11 @@ const format = ({ id, firstName, middleName, lastName }) => ({
 });
 
 const isValid = (firstName, middleName, lastName) => {
-  if (!firstName) return { message: 'First name required' };
-  if (typeof firstName !== 'string') return { message: 'First name must be string' };
-  if (!lastName) return { message: 'Last name required' };
-  if (typeof lastName !== 'string') return { message: 'Last name must be string'}
-  if (middleName && typeof middleName !== 'string') return { message: 'Middle name must be string' };
+  if (!firstName) return { code: 422, message: 'First name required' };
+  if (typeof firstName !== 'string') return { code: 422, message: 'First name must be string' };
+  if (!lastName) return { code: 422, message: 'Last name required' };
+  if (typeof lastName !== 'string') return { code: 422, message: 'Last name must be string'}
+  if (middleName && typeof middleName !== 'string') return { code: 422, message: 'Middle name must be string' };
   return {};
 };
 
@@ -37,12 +37,14 @@ const create = async (firstName, middleName, lastName) => {
 
   const { insertId } = await Author.create(firstName, middleName, lastName);
 
-  return format({
+  const returnAuthor = format({
     id: insertId,
     firstName,
     middleName,
     lastName,
   });
+
+  return { code: 200, author: returnAuthor };
 };
 
 module.exports = {
