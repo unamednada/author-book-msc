@@ -45,9 +45,26 @@ const create = async (req, res, next) => {
   res.status(201).json(book);
 };
 
+const findByTitle = async (req, res, next) => {
+  const { title } = req.body;
+  const { error } = Joi.object({
+    title: Joi.string().not().empty().required(),
+  }).validate({ title });
+
+  if (error) {
+    return next(error);
+  }
+
+  const book = await Book.findByTitle(title);
+  if (book.error) return next(book.error);
+
+  res.status(200).json(book);
+};
+
 module.exports = {
   getAll,
   getByAuthorId,
   findById,
   create,
+  findByTitle,
 };

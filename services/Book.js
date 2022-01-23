@@ -59,7 +59,7 @@ const create = async (title, authorId) =>{
       },
     };
   }
-  
+
   const { insertId } = await Book.create(title, authorId);
 
   const returnBook = ({
@@ -71,9 +71,25 @@ const create = async (title, authorId) =>{
   return returnBook;
 };
 
+const findByTitle = async (title) => {
+  const book = await Book.findByTitle(title);
+
+  if (!book) {
+    return {
+      error: {
+        code: 'notFound',
+        message: 'Book not found',
+      },
+    };
+  }
+
+  return book;
+}
+
 module.exports = {
   getAll,
   getByAuthorId,
   findById,
   create,
+  findByTitle,
 };

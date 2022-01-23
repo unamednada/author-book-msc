@@ -19,6 +19,7 @@ app.get('/authors', rescue(Author.getAll));
 app.post('/authors', rescue(Author.create));
 
 app.get('/books/author/:author_id', rescue(Book.getByAuthorId));
+app.get('/books/title', rescue(Book.findByTitle));
 app.get('/books/:id', rescue(Book.findById));
 app.get('/books', rescue(Book.getAll));
 app.post('/books', rescue(Book.create));
