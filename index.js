@@ -13,7 +13,7 @@ const Book = require('./controllers/Book');
 const { validateAuthor, validateAuthorId } = require('./middlewares/Author');
 const { validateBook } = require('./middlewares/Book');
 
-app.get('/authors/name/', Author.findByName);
+app.get('/authors/name/', validateAuthor, Author.findByName);
 app.get('/authors/:id', Author.findById);
 app.get('/authors', Author.getAll);
 app.post('/authors', validateAuthor, Author.create);
