@@ -36,6 +36,15 @@ const getByAuthorId = async (authorId) => {
 const findById = async (id) => {
   const book = await Book.findById(id);
 
+  if (!book) {
+    return {
+      error: {
+        code: 'notFound',
+        message: 'Book not found',
+      },
+    };
+  }
+
   return book;
 };
 

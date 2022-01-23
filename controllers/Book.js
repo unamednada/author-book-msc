@@ -16,12 +16,12 @@ const getByAuthorId = async (req, res, next) => {
   res.status(200).json(books);
 };
 
-const findById = async (req, res) => {
+const findById = async (req, res, next) => {
   const { id } = req.params;
 
   const book = await Book.findById(id);
 
-  if (!book) return res.status(404).json({ message: 'Book Notfound' });
+  if (book.error) return next(book.error);
 
   res.status(200).json(book);
 };
