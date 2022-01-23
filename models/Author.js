@@ -41,10 +41,10 @@ const create = async (firstName, middleName, lastName) => {
 };
 
 const findByName = async (firstName, middleName, lastName) => {
-  let params = [firstName, lastName];
+  const params = [firstName, lastName];
   if (middleName) {
     middleNameQuery = 'AND middle_name = ?';
-    params = [firstName, middleName, lastName];
+    params.splice(1, middleName);
   };
 
   const [authorData] = await connection.execute(QUERIES.findByName, params);
