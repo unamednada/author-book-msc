@@ -10,9 +10,11 @@ const { PORT } = process.env;
 const Author = require('./controllers/Author');
 const Book = require('./controllers/Book');
 
+const { validateAuthor } = require('./middlewares/Author');
+
 app.get('/authors/:id', Author.findById);
 app.get('/authors', Author.getAll);
-app.post('/authors', Author.create);
+app.post('/authors', validateAuthor, Author.create);
 
 app.get('/books/author/:author_id', Book.getByAuthorId);
 app.get('/books/:id', Book.findById);

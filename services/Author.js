@@ -1,5 +1,4 @@
 const Author = require('../models/Author');
-const { validate } = require('../schemas/Author');
 
 const format = ({ id, firstName, middleName, lastName }) => ({
   id,
@@ -23,10 +22,6 @@ const findById = async (id) => {
 };
 
 const create = async (firstName, middleName, lastName) => {
-  const authorNotValid = validate(firstName, middleName, lastName);
-
-  if (authorNotValid.message) return authorNotValid;
-
   const { insertId } = await Author.create(firstName, middleName, lastName);
 
   const returnAuthor = format({
