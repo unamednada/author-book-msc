@@ -1,10 +1,12 @@
 const connection = require('./connection');
 
+let middleNameQuery = ''
 const QUERIES = {
-  getAll: 'SELECT id, first_name, middle_name, last_name FROM authors',
-  findById: 'SELECT id, first_name, middle_name, last_name FROM authors WHERE id = ?',
-  create: 'INSERT INTO model_example.authors (first_name, middle_name, last_name) VALUES (?, ?, ?)',
-}
+  getAll: 'SELECT id, first_name, middle_name, last_name FROM authors;',
+  findById: 'SELECT id, first_name, middle_name, last_name FROM authors WHERE id = ?;',
+  create: 'INSERT INTO model_example.authors (first_name, middle_name, last_name) VALUES (?, ?, ?);',
+  findByName: `SELECT id, first_name, middle_name, last_name FROM model_example.authors WHERE first_name = ? ${middleNameQuery} AND last_name = ?;`,
+};
 
 const serialize = (authorData) => ({
   id: authorData.id,
@@ -38,8 +40,24 @@ const create = async (firstName, middleName, lastName) => {
   return author;
 };
 
+const findByName = async (firstName, middleName, lastName) => {
+  let params = [firstName, lastName];
+  if (middleName) {
+    middleNameQuery = 'AND middle_name = ?';
+    params = [firstName, middleName, lastName];
+  };
+
+  const [authorData] = await connection.execute(QUERIES.findByName, params);
+
+  if (!authorData.length) return null;
+
+  const author = authorData[0];
+  return serialize(author);
+};
+
 module.exports = {
   getAll,
   findById,
   create,
+  findByName,
 };

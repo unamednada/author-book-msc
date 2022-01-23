@@ -34,8 +34,16 @@ const create = async (firstName, middleName, lastName) => {
   return returnAuthor;
 };
 
+const findByName = async (firstName, middleName, lastName) => {
+  const author = await Author.findByName(firstName, middleName, lastName);
+
+  if (author) return format(author);
+  return null;
+};
+
 module.exports = {
   getAll,
   findById,
   create,
+  findByName,
 };
