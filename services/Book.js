@@ -27,7 +27,7 @@ const create = async (title, authorId) =>{
     authorId,
   });
   
-  return { code: 201, book: returnBook };
+  return returnBook;
 };
 
 module.exports = {
