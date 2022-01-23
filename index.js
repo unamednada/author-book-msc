@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 const { PORT } = process.env;
 
 const Author = require('./services/Author');
-const Book = require('./models/Book');
+const Book = require('./services/Book');
 
 app.get('/authors/:id', async (req, res) => {
   const { id } = req.params;
@@ -64,11 +64,11 @@ app.get('/books', async (_req, res) => {
 
 app.post('/books', async (req, res) => {
   const { title, author_id } = req.body;
+  const book = await Book.create(title, author_id);
 
-  if (!Book.isValid(title, author_id)) return res.status(400).json({ message: 'Datanotvalid' });
+  if (!book) return res.status(400).json({ message: 'Datanotvalid' });
 
-  await Book.create(title, author_id);
-  res.status(201).json({ message: 'Book created' });
+  res.status(201).json(book);
 });
 
 app.listen(PORT, () => { console.log(`Listening on port ${PORT}`); });
