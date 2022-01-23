@@ -44,7 +44,7 @@ const create = async (firstName, middleName, lastName) => {
     lastName,
   });
 
-  return { code: 200, author: returnAuthor };
+  return { code: 201, author: returnAuthor };
 };
 
 module.exports = {

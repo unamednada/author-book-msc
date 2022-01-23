@@ -23,7 +23,7 @@ const create = async (req, res) => {
 
   if (!author) return res.status(code).json({ message });
 
-  res.status(201).json(author);
+  res.status(code).json(author);
 };
 
 module.exports = {
