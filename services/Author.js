@@ -31,7 +31,7 @@ const create = async (firstName, middleName, lastName) => {
     lastName,
   });
 
-  return { code: 201, author: returnAuthor };
+  return returnAuthor;
 };
 
 module.exports = {
