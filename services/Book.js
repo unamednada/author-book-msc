@@ -49,6 +49,17 @@ const findById = async (id) => {
 };
 
 const create = async (title, authorId) =>{
+  const author = await Author.findById(authorId);
+
+  if (!author) {
+    return {
+      error: {
+        code: 'notFound',
+        message: 'Author not found',
+      },
+    };
+  }
+  
   const { insertId } = await Book.create(title, authorId);
 
   const returnBook = ({

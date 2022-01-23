@@ -10,19 +10,18 @@ const { PORT } = process.env;
 
 const Author = require('./controllers/Author');
 const Book = require('./controllers/Book');
-const errorMiddleware = require('./middlewares/error');
 
-const { validateBook } = require('./middlewares/Book');
+const errorMiddleware = require('./middlewares/error');
 
 app.get('/authors/name/', rescue(Author.findByName));
 app.get('/authors/:id', rescue(Author.findById));
 app.get('/authors', rescue(Author.getAll));
 app.post('/authors', rescue(Author.create));
 
-app.get('/books/author/:author_id', Book.getByAuthorId);
-app.get('/books/:id', Book.findById);
-app.get('/books', Book.getAll);
-app.post('/books', validateBook, Book.create);
+app.get('/books/author/:author_id', rescue(Book.getByAuthorId));
+app.get('/books/:id', rescue(Book.findById));
+app.get('/books', rescue(Book.getAll));
+app.post('/books', rescue(Book.create));
 
 app.use(errorMiddleware);
 

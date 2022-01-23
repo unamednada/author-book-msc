@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const Book = require('../services/Book');
 
 const getAll = async (_req, res) => {
@@ -26,9 +27,20 @@ const findById = async (req, res, next) => {
   res.status(200).json(book);
 };
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   const { title, author_id } = req.body;
+  const { error } = Joi.object({
+    title: Joi.string().not().empty().required(),
+    author_id:Joi.number().not().empty().required(),
+  }).validate({ title, author_id });
+
+  if (error) {
+    return next(error);
+  }
+
   const book = await Book.create(title, author_id);
+
+  if (book.error) return next(book.error);
 
   res.status(201).json(book);
 };
