@@ -17,11 +17,29 @@ const getAll = async () => {
 const findById = async (id) => {
   const author = await Author.findById(id);
 
-  if (author) return format(author);
-  return null;
+  if (!author) {
+    return {
+      error: {
+        code: 'notFound',
+        message: 'Author not found',
+      },
+    };
+  }
+
+  return author;
 };
 
 const create = async (firstName, middleName, lastName) => {
+  const authorExists = await Author.findByName(firstName, middleName, lastName);
+  if (authorExists) {
+    return {
+      error: {
+        code: 'alreadyExists',
+        message: 'Author already exists',
+      },
+    };
+  }
+  
   const { insertId } = await Author.create(firstName, middleName, lastName);
 
   const returnAuthor = format({
@@ -37,8 +55,16 @@ const create = async (firstName, middleName, lastName) => {
 const findByName = async (firstName, middleName, lastName) => {
   const author = await Author.findByName(firstName, middleName, lastName);
 
-  if (author) return format(author);
-  return null;
+  if (!author) {
+    return {
+      error: {
+        code: 'notFound',
+        message: 'Author not found',
+      },
+    };
+  }
+
+  return format(author);
 };
 
 module.exports = {

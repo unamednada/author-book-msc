@@ -22,6 +22,7 @@
     "body-parser": "^1.19.1",
     "dotenv": "^14.2.0",
     "express": "^4.17.2",
+    "express-rescue": "^1.1.31",
     "express-route": "^0.1.4",
     "joi": "^17.5.0",
     "mysql2": "^2.3.3"
