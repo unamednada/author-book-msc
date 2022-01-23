@@ -1,5 +1,4 @@
 const Book = require('../models/Book');
-const { validate } = require('../schemas/Book');
 
 const getAll = async () => {
   const books = await Book.getAll();
@@ -20,10 +19,6 @@ const findById = async (id) => {
 };
 
 const create = async (title, authorId) =>{
-  const bookNotValid = await validate(title, authorId);
-
-  if (bookNotValid.message) return bookNotValid;
-
   const { insertId } = await Book.create(title, authorId);
 
   const returnBook = ({
@@ -32,7 +27,7 @@ const create = async (title, authorId) =>{
     authorId,
   });
   
-  return { code: 201, book: returnBook };
+  return returnBook;
 };
 
 module.exports = {

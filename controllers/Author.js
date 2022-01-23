@@ -18,16 +18,23 @@ const findById = async (req, res) => {
 
 const create = async (req, res) => {
   const { first_name, middle_name, last_name } = req.body;
+  const author = await Author.create(first_name, middle_name, last_name);
 
-  const { code, author, message } = await Author.create(first_name, middle_name, last_name);
+  res.status(201).json(author);
+};
 
-  if (!author) return res.status(code).json({ message });
+const findByName = async (req, res) => {
+  const { first_name, middle_name, last_name } = req.body;
 
-  res.status(code).json(author);
+  const author = await Author.findByName(first_name, middle_name, last_name);
+  if (!author) return res.status(404).json({ message: 'Author Notfound' });
+
+  res.status(200).json(author);
 };
 
 module.exports = {
   getAll,
   findById,
   create,
+  findByName,
 };
