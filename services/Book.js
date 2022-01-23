@@ -1,7 +1,5 @@
 const Book = require('../models/Book');
 const { validate } = require('../schemas/Book');
-const Author = require('../models/Author');
-
 
 const getAll = async () => {
   const books = await Book.getAll();
