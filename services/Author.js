@@ -1,4 +1,5 @@
 const Author = require('../models/Author');
+const { validate } = require('../schemas/Author');
 
 const format = ({ id, firstName, middleName, lastName }) => ({
   id,
@@ -7,15 +8,6 @@ const format = ({ id, firstName, middleName, lastName }) => ({
   lastName,
   fullName: [firstName, middleName, lastName].filter(exist => exist).join(' '),
 });
-
-const isValid = (firstName, middleName, lastName) => {
-  if (!firstName) return { code: 422, message: 'First name required' };
-  if (typeof firstName !== 'string') return { code: 422, message: 'First name must be string' };
-  if (!lastName) return { code: 422, message: 'Last name required' };
-  if (typeof lastName !== 'string') return { code: 422, message: 'Last name must be string'}
-  if (middleName && typeof middleName !== 'string') return { code: 422, message: 'Middle name must be string' };
-  return {};
-};
 
 const getAll = async () => {
   const authors = await Author.getAll();
@@ -31,7 +23,7 @@ const findById = async (id) => {
 };
 
 const create = async (firstName, middleName, lastName) => {
-  const authorNotValid = isValid(firstName, middleName, lastName);
+  const authorNotValid = validate(firstName, middleName, lastName);
 
   if (authorNotValid.message) return authorNotValid;
 

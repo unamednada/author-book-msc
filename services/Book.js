@@ -1,16 +1,7 @@
 const Book = require('../models/Book');
+const { validate } = require('../schemas/Book');
 const Author = require('../models/Author');
 
-const isValid = async (title, authorId) => {
-  if (!title) return { code: 422, message: 'Title required' };
-  if (typeof title !== 'string') return { code: 422, message: 'Title must be string' };
-  if (!authorId) return { code:422, message: 'Author id required' };
-  
-  const author = await Author.findById(authorId);
-  if (!author) return { code: 404, message: 'Author Notfound' };
-
-  return {};
-};
 
 const getAll = async () => {
   const books = await Book.getAll();
@@ -31,7 +22,7 @@ const findById = async (id) => {
 };
 
 const create = async (title, authorId) =>{
-  const bookNotValid = await isValid(title, authorId);
+  const bookNotValid = await validate(title, authorId);
 
   if (bookNotValid.message) return bookNotValid;
 
