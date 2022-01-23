@@ -16,12 +16,13 @@ const authorNotFound = async (authorId) => {
 };
 
 const validate = async (title, authorId) => {
-  if (blank(title)) return { code: 422, message: errors.title_blank };
-  if (notString(title)) return { code: 422, message: errors.title_not_string };
-  if (blank(authorId)) return { code:422, message: errors.authorId_blank };
-  if (await authorNotFound(authorId)) return { code: 404, message: errors.author_not_found };
-
-  return {};
+  switch (true) {
+    case blank(title): return { code: 422, message: errors.title_blank };
+    case notString(title): return { code: 422, message: errors.title_not_string };
+    case blank(authorId): return { code:422, message: errors.authorId_blank };
+    case await authorNotFound(authorId): return { code: 404, message: errors.author_not_found };
+    default: return {};
+  };  
 };
 
 module.exports = {
