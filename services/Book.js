@@ -3,9 +3,10 @@ const Author = require('../models/Author');
 
 const isValid = async (title, authorId) => {
   if (!title || typeof title !== 'string') return false;
+  if (!authorId) return false;
   
   const author = await Author.findById(authorId);
-  if (!authorId || !author) return false;
+  if (!author) return false;
 
   return true;
 };
