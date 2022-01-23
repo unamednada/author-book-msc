@@ -34,7 +34,8 @@ const findById = async (authorId) => {
 };
 
 const create = async (firstName, middleName, lastName) => {
-  await connection.execute(QUERIES.create, [firstName, middleName || null, lastName]);
+  const [author] = await connection.execute(QUERIES.create, [firstName, middleName || null, lastName]);
+  return author;
 };
 
 module.exports = {

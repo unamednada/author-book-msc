@@ -28,12 +28,12 @@ app.get('/authors', async (_req, res) => {
 
 app.post('/authors', async (req, res) => {
   const { first_name, middle_name, last_name } = req.body;
-  
+
   const author = await Author.create(first_name, middle_name, last_name);
 
   if (!author) return res.status(400).json({ message: 'Datanotvalid' });
 
-  res.status(201).json({ message: 'Author created' });
+  res.status(201).json(author);
 });
 
 app.get('/books/author/:author_id', async (req, res) => {
