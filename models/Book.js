@@ -6,6 +6,7 @@ const QUERIES = {
   getByAuthorId: 'SELECT id, title, author_id FROM books WHERE author_id = ?',
   findById: 'SELECT id, title, author_id FROM books WHERE id = ?',
   create: 'INSERT INTO model_example.books (title, author_id) VALUES (?, ?)',
+  findByTitle: 'SELECT id, title, author_id FROM books WHERE title = ?',
 };
 
 const serialize = (bookData) => ({
@@ -41,9 +42,18 @@ const create = async (title, authorId) => {
   return book;
 };
 
+const findByTitle = async (title) => {
+  const [bookData] = await connection.execute(QUERIES.findByTitle, [title]);
+
+  if (!bookData.length) return null;
+
+  return bookData[0];
+};
+
 module.exports = {
   getAll,
   getByAuthorId,
   findById,
   create,
+  findByTitle,
 };
