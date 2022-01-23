@@ -2,13 +2,14 @@ const Book = require('../models/Book');
 const Author = require('../models/Author');
 
 const isValid = async (title, authorId) => {
-  if (!title || typeof title !== 'string') return false;
-  if (!authorId) return false;
+  if (!title) return { message: 'Title required' };
+  if (typeof title !== 'string') return { message: 'Title must be string' };
+  if (!authorId) return { message: 'Author id required' };
   
   const author = await Author.findById(authorId);
-  if (!author) return false;
+  if (!author) return { message: 'Author Notfound' };
 
-  return true;
+  return {};
 };
 
 const getAll = async () => {
@@ -30,9 +31,9 @@ const findById = async (id) => {
 };
 
 const create = async (title, authorId) =>{
-  const bookValid = await isValid(title, authorId);
+  const bookNotValid = await isValid(title, authorId);
 
-  if (!bookValid) return false;
+  if (bookNotValid.message) return bookNotValid;
 
   const { insertId } = await Book.create(title, authorId);
 
