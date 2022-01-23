@@ -1,14 +1,5 @@
 const Book = require('../models/Book');
-const Author = require('../models/Author');
-
-const isValid = async (title, authorId) => {
-  if (!title || typeof title !== 'string') return false;
-  
-  const author = await Author.findById(authorId);
-  if (!authorId || !author) return false;
-
-  return true;
-};
+const { validate } = require('../schemas/Book');
 
 const getAll = async () => {
   const books = await Book.getAll();
@@ -29,17 +20,19 @@ const findById = async (id) => {
 };
 
 const create = async (title, authorId) =>{
-  const bookValid = await isValid(title, authorId);
+  const bookNotValid = await validate(title, authorId);
 
-  if (!bookValid) return false;
+  if (bookNotValid.message) return bookNotValid;
 
   const { insertId } = await Book.create(title, authorId);
 
-  return ({
+  const returnBook = ({
     id: insertId,
     title,
     authorId,
   });
+  
+  return { code: 201, book: returnBook };
 };
 
 module.exports = {

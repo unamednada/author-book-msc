@@ -19,11 +19,11 @@ const findById = async (req, res) => {
 const create = async (req, res) => {
   const { first_name, middle_name, last_name } = req.body;
 
-  const author = await Author.create(first_name, middle_name, last_name);
+  const { code, author, message } = await Author.create(first_name, middle_name, last_name);
 
-  if (!author) return res.status(400).json({ message: 'Datanotvalid' });
+  if (!author) return res.status(code).json({ message });
 
-  res.status(201).json(author);
+  res.status(code).json(author);
 };
 
 module.exports = {
