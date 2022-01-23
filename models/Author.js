@@ -27,6 +27,7 @@ const findById = async (authorId) => {
   if (!authorData.length) return null;
 
   const { firstName, middleName, lastName } = authorData.map(serialize)[0];
+  
   return ({
     id: authorId,
     firstName,
