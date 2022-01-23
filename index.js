@@ -7,34 +7,12 @@ app.use(bodyParser.json());
 
 const { PORT } = process.env;
 
-const Author = require('./services/Author');
+const Author = require('./controllers/Author');
 const Book = require('./services/Book');
 
-app.get('/authors/:id', async (req, res) => {
-  const { id } = req.params;
-
-  const author = await Author.findById(id);
-
-  if (!author) return res.status(404).json({ message: 'Author Notfound' });
-
-  res.status(200).json(author);
-});
-
-app.get('/authors', async (_req, res) => {
-  const authors = await Author.getAll();
-
-  res.status(200).json(authors);
-});
-
-app.post('/authors', async (req, res) => {
-  const { first_name, middle_name, last_name } = req.body;
-
-  const author = await Author.create(first_name, middle_name, last_name);
-
-  if (!author) return res.status(400).json({ message: 'Datanotvalid' });
-
-  res.status(201).json(author);
-});
+app.get('/authors/:id', Author.findById);
+app.get('/authors', Author.getAll);
+app.post('/authors', Author.create);
 
 app.get('/books/author/:author_id', async (req, res) => {
   const { author_id } = req.params;
