@@ -9,10 +9,12 @@ const format = ({ id, firstName, middleName, lastName }) => ({
 });
 
 const isValid = (firstName, middleName, lastName) => {
-  if (!firstName || typeof firstName !== 'string') return false;
-  if (!lastName || typeof lastName !== 'string') return false;
-  if (middleName && typeof middleName !== 'string') return false;
-  return true;
+  if (!firstName) return { message: 'First name required' };
+  if (typeof firstName !== 'string') return { message: 'First name must be string' };
+  if (!lastName) return { message: 'Last name required' };
+  if (typeof lastName !== 'string') return { message: 'Last name must be string'}
+  if (middleName && typeof middleName !== 'string') return { message: 'Middle name must be string' };
+  return {};
 };
 
 const getAll = async () => {
@@ -29,9 +31,9 @@ const findById = async (id) => {
 };
 
 const create = async (firstName, middleName, lastName) => {
-  const authorValid = isValid(firstName, middleName, lastName);
+  const authorNotValid = isValid(firstName, middleName, lastName);
 
-  if (!authorValid) return false;
+  if (authorNotValid.message) return authorNotValid;
 
   const { insertId } = await Author.create(firstName, middleName, lastName);
 

@@ -21,7 +21,7 @@ const create = async (req, res) => {
 
   const author = await Author.create(first_name, middle_name, last_name);
 
-  if (!author) return res.status(400).json({ message: 'Datanotvalid' });
+  if (author.message) return res.status(400).json({ message: author.message });
 
   res.status(201).json(author);
 };
