@@ -10,6 +10,7 @@ const { PORT } = process.env;
 
 const Author = require('./controllers/Author');
 const Book = require('./controllers/Book');
+const errorMiddleware = require('./middlewares/error');
 
 const { validateAuthorId } = require('./middlewares/Author');
 const { validateBook } = require('./middlewares/Book');
@@ -23,5 +24,7 @@ app.get('/books/author/:author_id', validateAuthorId, Book.getByAuthorId);
 app.get('/books/:id', Book.findById);
 app.get('/books', Book.getAll);
 app.post('/books', validateBook, Book.create);
+
+app.use(errorMiddleware);
 
 app.listen(PORT, () => { console.log(`Listening on port ${PORT}`); });
