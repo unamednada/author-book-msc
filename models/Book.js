@@ -14,15 +14,6 @@ const serialize = (bookData) => ({
   authorId: bookData.author_id,
 });
 
-const isValid = (title, authorId) => {
-  if (!title || typeof title !== 'string') return false;
-  
-  const author = Author.findById(authorId);
-  if (!authorId || !author) return false;
-
-  return true;
-};
-
 const getAll = async () => {
   const [books] = await connection.execute(QUERIES.getAll);
 
@@ -46,13 +37,13 @@ const findById = async (bookId) => {
 };
 
 const create = async (title, authorId) => {
-  await connection.execute(QUERIES.create, [title, authorId]);
+  const [book] = await connection.execute(QUERIES.create, [title, authorId]);
+  return book;
 };
 
 module.exports = {
   getAll,
   getByAuthorId,
   findById,
-  isValid,
   create,
 };
