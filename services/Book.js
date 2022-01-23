@@ -1,4 +1,5 @@
 const Book = require('../models/Book');
+const Author = require('../models/Author');
 
 const getAll = async () => {
   const books = await Book.getAll();
@@ -7,7 +8,27 @@ const getAll = async () => {
 };
 
 const getByAuthorId = async (authorId) => {
+  const author = await Author.findById(authorId);
+
+  if (!author) {
+    return {
+      error: {
+        code: 'notFound',
+        message: 'Author not found',
+      },
+    };
+  }
+
   const books = await Book.getByAuthorId(authorId);
+
+  if (!books) {
+    return {
+      error: {
+        code: 'notFound',
+        message: 'Books not found',
+      },
+    };
+  }
 
   return books;
 };

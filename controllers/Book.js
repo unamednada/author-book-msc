@@ -6,12 +6,12 @@ const getAll = async (_req, res) => {
   res.status(200).json(books);
 };
 
-const getByAuthorId = async (req, res) => {
+const getByAuthorId = async (req, res, next) => {
   const { author_id } = req.params;
 
   const books = await Book.getByAuthorId(author_id);
 
-  if (!books) return res.status(404).json({ message: 'Books Notfound' });
+  if (books.error) return next(books.error);
 
   res.status(200).json(books);
 };
