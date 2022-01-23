@@ -1,5 +1,19 @@
 const Author = require('../models/Author');
 
+const NOT_FOUND = 'notFound';
+const ALREADY_EXISTS = 'alreadyExists';
+
+const errors = {
+  author_not_found: {
+    code: NOT_FOUND,
+    message: 'Author not found',
+  },
+  author_already_exists: {
+    code: ALREADY_EXISTS,
+    message: 'Author already exists',
+  },
+};
+
 const format = ({ id, firstName, middleName, lastName }) => ({
   id,
   firstName,
@@ -19,10 +33,7 @@ const findById = async (id) => {
 
   if (!author) {
     return {
-      error: {
-        code: 'notFound',
-        message: 'Author not found',
-      },
+      error: errors.author_not_found,
     };
   }
 
@@ -31,12 +42,10 @@ const findById = async (id) => {
 
 const create = async (firstName, middleName, lastName) => {
   const authorExists = await Author.findByName(firstName, middleName, lastName);
+
   if (authorExists) {
     return {
-      error: {
-        code: 'alreadyExists',
-        message: 'Author already exists',
-      },
+      error: errors.author_already_exists,
     };
   }
   
@@ -57,10 +66,7 @@ const findByName = async (firstName, middleName, lastName) => {
 
   if (!author) {
     return {
-      error: {
-        code: 'notFound',
-        message: 'Author not found',
-      },
+      error: errors.author_not_found,
     };
   }
 

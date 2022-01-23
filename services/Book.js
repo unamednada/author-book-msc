@@ -1,6 +1,24 @@
 const Book = require('../models/Book');
 const Author = require('../models/Author');
 
+const NOT_FOUND = 'notFound';
+const ALREADY_EXISTS = 'alreadyExists';
+
+const errors = {
+  author_not_found: {
+    code: NOT_FOUND,
+    message: 'Author not found',
+  },
+  book_already_exists: {
+    code: ALREADY_EXISTS,
+    message: 'Book already exists',
+  },
+  book_not_found: {
+    code: NOT_FOUND,
+    message: 'Book(s) not found',
+  },
+};
+
 const getAll = async () => {
   const books = await Book.getAll();
 
@@ -12,10 +30,7 @@ const getByAuthorId = async (authorId) => {
 
   if (!author) {
     return {
-      error: {
-        code: 'notFound',
-        message: 'Author not found',
-      },
+      error: errors.author_not_found,
     };
   }
 
@@ -23,10 +38,7 @@ const getByAuthorId = async (authorId) => {
 
   if (!books) {
     return {
-      error: {
-        code: 'notFound',
-        message: 'Books not found',
-      },
+      error: errors.book_not_found,
     };
   }
 
@@ -38,10 +50,7 @@ const findById = async (id) => {
 
   if (!book) {
     return {
-      error: {
-        code: 'notFound',
-        message: 'Book not found',
-      },
+      error: errors.book_not_found,
     };
   }
 
@@ -53,10 +62,15 @@ const create = async (title, authorId) =>{
 
   if (!author) {
     return {
-      error: {
-        code: 'notFound',
-        message: 'Author not found',
-      },
+      error: errors.author_not_found,
+    };
+  }
+
+  const bookExists = await Book.findByTitle(title);
+
+  if (bookExists) {
+    return {
+      error: errors.book_already_exists,
     };
   }
 
@@ -76,10 +90,7 @@ const findByTitle = async (title) => {
 
   if (!book) {
     return {
-      error: {
-        code: 'notFound',
-        message: 'Book not found',
-      },
+      error: errors.book_not_found,
     };
   }
 
